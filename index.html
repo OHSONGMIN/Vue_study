@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>뷰 기초 익히기</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    Hello World
+
+    직접 script에 추가
+    Vue.js 홈페이지에서 CDN을 통해서 Vue script를 추가
+
+    <br><br>
+    new Vue로 뷰 인스턴스 생성하면서 
+    <!-- <div id="app"></div> --> 이 태그 안에 뷰 코드를 작성할 수 있다.
+
+    <div id="app">
+        {{ name}}
+    </div>
+    <script>
+        new Vue({ 
+            el: '#app',
+            data: {
+                name: '코지 코더'
+            }
+        }) 
+    </script>
+</body>
+</html>
