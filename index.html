@@ -4,73 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>뷰 기초 익히기</title>
-    <style>
-        .red {
-            color: red;
-        }
-
-        .bold {
-            font-weight: bold;
-        }
-
-        .font-bold {
-            font-weight: bold;
-        }
-    </style>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
     <div id="app">
-        <!-- <div class="red bold">Hello</div> -->
+        <div>
+            {{ people[0].name }} {{ people[0].age }}
+        </div>
+        <div>
+            {{ people[1].name }} {{ people[1].age }}
+        </div>
+        <div>
+            {{ people[2].name }} {{ people[2].age }}
+        </div>
+        <div>
+            {{ people[3].name }} {{ people[3].age }}
+        </div>
+        <hr>
 
-        <!-- 클래스 바인딩 -->
-        <!-- isRed가 true면 red가 class안에 들어가고 Hello는 빨간색으로 바뀌게 된다. -->
-        <div :class="{ red: isRed, bold: isBold }">Hello</div> 
-        <button @click="update">Click</button>
+        <div v-for="person in people"> <!-- in 대신 of 도 사용 가능하다. -->
+            {{ person.name }} {{ person.age }}
+        </div>
+        <hr>
 
-        <!-- 만약 .font-bold 를 적용시키고 싶다면 -->
-        <div :class="{'font-bold': isBold}"></div>
-        <!-- 처럼 작은 따옴표('')를 사용해야 한다. -->
+        <!-- 아래와 같이 index도 가져올 수 있다. -->
+        <div v-for="(person, index) in people">
+            {{ person.name }} {{ person.age }} {{ index }}
+        </div>
+        <hr>
 
-        <!-- 통째로 넣어서 사용 가능하다. -->
-        <div v-bind:class="classObject"></div>
+        <!-- Vue에서 개별 DOM 노드들을 추적하고 기존 엘리먼트를 재사용, 재정렬하기 위해서
+            v-for 의 각 항목들에 고유한 key 속성을 제공해야 합니다. -->
+        <!-- 보통은 id를 이용하는 게 좋고 
+            index를 넣는 건 좋지 않음 
+            어떤 데이터가 지워지면 index가 변화하기 때문에 애매~~~하다 -->
 
-        <!-- 삼항 연산자를 이용할 수도 있다. -->
-        <div v-bind:class="[isActive ? activeClass: '', errorClass]"></div>
-
-        <!-- 스타일 바인딩 -->
-        <!-- 스타일 바인딩을 매우 직설적입니다. 거의 CSS 처럼 보이지만 JavaScript 객체입니다. 
-        속성 이름에 camelCase와 kebab-case(따옴표를 함께 사용해야 합니다)를 사용할 수 있습니다. -->
-        <!-- font-size가 아닌 fontSize 또는 'font-size' 라고 써야 함 -->
-        <div :style="{ color: red, fontSize: size }">Hello</div>
-
-        <div v-bind:style="styleObject"></div>
+        <!-- <div v-for="(person, index) in people" :key="person.name + '-' + person.age"> -->
+        <div v-for="(person, index) in people" :key="person.id">
+            {{ person.name }} {{ person.age }} {{ index }}
+        </div>
     </div>
     <script>
         new Vue({ 
             el: '#app',
             data: {
-                isRed: false,
-                isBold: false,
-
-                classObject: {
-                    active: true,
-                    'text-danger': false
-                },
-
-                red: 'red',
-                size: '30px',
-
-                styleObject: { //스타일 객체를 만들어서 통째로 넘겨져도 된다. 
-                    color: 'red',
-                    fontSize: '13px'
-                }
+                people: [
+                    {id: 1, name: 'a', age: 20},
+                    {id: 2, name: 'b', age: 21},
+                    {id: 3, name: 'c', age: 22},
+                    {id: 4, name: 'd', age: 23},
+                    {id: 5, name: 'e', age: 24},
+                ]
             },
             methods: { 
-                update() {
-                    this.isRed = !this.isRed;
-                    this.isBold = !this.isBold;
-                }  
+                
             },
         }) 
     </script>
