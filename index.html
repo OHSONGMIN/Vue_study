@@ -4,37 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>뷰 기초 익히기</title>
+    <style>
+        .red {
+            color: red;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .font-bold {
+            font-weight: bold;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
     <div id="app">
-        {{ message }}<
-        <br><button @click="changeMessage">Click</button><br>
-        {{ updated }}
+        <!-- <div class="red bold">Hello</div> -->
+
+        <!-- 클래스 바인딩 -->
+        <!-- isRed가 true면 red가 class안에 들어가고 Hello는 빨간색으로 바뀌게 된다. -->
+        <div :class="{ red: isRed, bold: isBold }">Hello</div> 
+        <button @click="update">Click</button>
+
+        <!-- 만약 .font-bold 를 적용시키고 싶다면 -->
+        <div :class="{'font-bold': isBold}"></div>
+        <!-- 처럼 작은 따옴표('')를 사용해야 한다. -->
+
+        <!-- 통째로 넣어서 사용 가능하다. -->
+        <div v-bind:class="classObject"></div>
+
+        <!-- 삼항 연산자를 이용할 수도 있다. -->
+        <div v-bind:class="[isActive ? activeClass: '', errorClass]"></div>
+
+        <!-- 스타일 바인딩 -->
+        <!-- 스타일 바인딩을 매우 직설적입니다. 거의 CSS 처럼 보이지만 JavaScript 객체입니다. 
+        속성 이름에 camelCase와 kebab-case(따옴표를 함께 사용해야 합니다)를 사용할 수 있습니다. -->
+        <!-- font-size가 아닌 fontSize 또는 'font-size' 라고 써야 함 -->
+        <div :style="{ color: red, fontSize: size }">Hello</div>
+
+        <div v-bind:style="styleObject"></div>
     </div>
     <script>
         new Vue({ 
             el: '#app',
             data: {
-                message: '안녕하세요',
-                updated: '아니요'
+                isRed: false,
+                isBold: false,
+
+                classObject: {
+                    active: true,
+                    'text-danger': false
+                },
+
+                red: 'red',
+                size: '30px',
+
+                styleObject: { //스타일 객체를 만들어서 통째로 넘겨져도 된다. 
+                    color: 'red',
+                    fontSize: '13px'
+                }
             },
             methods: { 
-                changeMessage() {
-                    this.message = '코지코더';
+                update() {
+                    this.isRed = !this.isRed;
+                    this.isBold = !this.isBold;
                 }  
             },
-            computed: {
-                reversedMessage() {
-                    return this.message.split('').reverse().join('');
-                }
-            },
-            watch: { //message라는 데이터를 지켜보고 있다가 변경이 일어나면 실행된다.
-                message(newVal, oldVal) {
-                    console.log(newVal, oldVal); //console에 코지코더 안녕하세요 라고 찍힘
-                    this.updated = '네';
-                }
-            }
         }) 
     </script>
 </body>
