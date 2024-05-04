@@ -8,46 +8,22 @@
 </head>
 <body>
     <div id="app">
-        <button onclick="alert('hello kossie coder')">Click Me</button>
-        <button v-on:click="alert">Click Me</button>
-
-        <br> {{ year }} <br>
-        <button v-on:click="plus">더하기</button>
-        <button v-on:click="minus">빼기</button>
-
-        <!-- 제출 이벤트가 페이지를 다시 로드하지 않습니다. -->
         <form v-on:submit.prevent="submit">
-            <input type="text"><br>
+            <!-- v-on: 은 @로 대체 가능하다. -->
+            <!-- <input type="text" :value="text" @keyup="updateText"><br> -->
+            <input type="text" v-model="text"><br>
+            <!-- updateText에 인자를 넣지 않았지만 
+            keyup에서 event object를 자동으로 넣어준다. -->
+            {{ text }} <br>
             <button type="submit">Submit</button>
-        </form> <!-- submit버튼을 누르면 form이니까 reload 된다. -->
-
-        <!-- 이벤트 수식어 
-        .stop
-        .prevent
-        .capture
-        .self
-        .once : 한번만 작동
-        .passive -->
-
-        <input v-on:keyup.tap="submit">
-        <!-- 키 수식어
-        keyup
-        keyup.enter
-        .tap
-        .delete
-        .esc
-        .space
-        .up
-        .down
-        .left
-        .right -->
-        
+        </form>
     </div>
     <script>
         new Vue({ 
             el: '#app',
             data: {
-               year: 2018
+               year: 2018,
+               text: 'text'
             },
             methods: { 
                 alert() {
@@ -62,7 +38,11 @@
                 submit() {
                     alert('submitted');
                     console.log('hello');
-                }
+                },
+                // updateText(event) {
+                //     this.text = event.target.value;
+                //     //target은 log 찍으면 볼 수 있음
+                // },
             }
         }) 
     </script>
