@@ -8,43 +8,55 @@
 </head>
 <body>
     <div id="app">
-        <form v-on:submit.prevent="submit">
-            <!-- v-on: 은 @로 대체 가능하다. -->
-            <!-- <input type="text" :value="text" @keyup="updateText"><br> -->
-            <input type="text" v-model="text"><br>
-            <!-- updateText에 인자를 넣지 않았지만 
-            keyup에서 event object를 자동으로 넣어준다. -->
-            {{ text }} <br>
-            <button type="submit">Submit</button>
-        </form>
+        <button @click="changeMessage">Click</button>
+        {{ message.split('').reverse().join('') }}
+        {{ reversedMessage }}
+        {{ reversedMessage }}
+        {{ reversedMessage }}
+        <!-- split부터 join까지는 자바스크립트 문법 
+        안녕하세요(message)를 한 글자씩 잘라서 Array에 담아준다.
+        reverse()를 통해 순서를 거꾸로 바꾸고 
+        join()을 통해 다시 String으로 합친다. -->
+        
+        {{ reversedMessage() }}
+        <!-- 함수를 사용할 땐 reversedMessage() 처럼 괄호를 붙여야 하고 
+        Computed 속성을 사용할 땐 Data 변수를 쓰는 것처럼 괄호 없이 사용해야 한다. -->
     </div>
     <script>
         new Vue({ 
             el: '#app',
             data: {
-               year: 2018,
-               text: 'text'
+                message: '안녕하세요'
             },
             methods: { 
-                alert() {
-                    alert('hi Kossie Coder');
+                reversedMessage() {
+                    return this.message.split('').reverse().join('');
                 },
-                plus() {
-                    this.year++;
-                },
-                minus() {
-                    this.year--;
-                },
-                submit() {
-                    alert('submitted');
-                    console.log('hello');
-                },
-                // updateText(event) {
-                //     this.text = event.target.value;
-                //     //target은 log 찍으면 볼 수 있음
-                // },
+                changeMessage() {
+                    this.message = '코지코더';
+                }  
+            },
+            computed: { //중복 제거에도 효과적
+                reversedMessage() {
+                    return this.message.split('').reverse().join('');
+                }
             }
         }) 
+        /* Computed 속성은 캐싱을 하고 메서드 함수는 캐싱을 하지 않는다.
+         * Vue 인스턴스가 처음 생성될 때 
+         * message가 '안녕하세요' 라는 값을 가지고 있고 
+         * 그리고 Computed 속성이 발휘되면서 
+         * reversedMessage 라는 Computed 속성이 생긴다.
+         
+         * 그래서 <div id="app">의 {{ reversedMessage }}에 접근할 때 
+         * 이미 계산된 값을 가져온다.
+         * 
+         * 그리고 message 값이 변경되면 
+         * 변경된 것을 캐치해서 다시 계산해주고 재적용한다.
+          
+         * 반면 함수를 사용할 경우엔 reversedMessage()를 사용할 때마다 계산한다.
+         * 3번은 사용하면 3번 계산.
+         */
     </script>
 </body>
 </html>
