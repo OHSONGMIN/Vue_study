@@ -10,36 +10,115 @@
     <div id="app">
         {{ name }}
         <button @click="changeText">Click</button>
+
+        <hr>
+
+        <kossie-button></kossie-button>
     </div>
+    <hr><hr>
+
     <div id="app-1">
-        {{ name }}
+        <!-- {{ name }}
         <button @click="changeText">Click</button>
+
+        <hr> -->
+
+        <kossie-button></kossie-button>
     </div>
-    <script> //뷰 인스턴스를 생성해서 변수에 담는다.
-        const app = new Vue({ 
-            el: '#app',
-            data: {
-                name: 'kossie',
+    <script> //컴포넌트 안에서 컴포넌트를 사용할 수 있다.
+
+        Vue.component('hello-world', {
+            template: `<div>hello world 전역 등록</div>`
+        })
+
+        //1. 전역 등록: Vue.component(tagName, options)
+        // Vue.component('kossie-button', {
+        //     template: //template내에서 하나의 태그로 묶어줘야 한다.
+        //     `<div>
+        //         {{ name }}<br>
+        //         <hello-world></hello-world>
+        //         <button @click="changeText">Click</button>
+        //     </div>`
+        //     ,
+        //     //줄 바꿈이 있을 때 ''가 아니라 ``을 사용해야 한다.
+        //     data() {
+        //         return { //data: {...}로 name을 지정할 경우 Object 주소가 넘어가기 때문에 
+        //         //한 곳에서 name을 변경하면 다 같이 변경될 것이다. 
+        //         //따라서 메서드로 만들어 return 해준다.
+        //             name: 'kossie'
+        //         }
+        //     },
+        //     methods: { 
+        //         changeText() { 
+        //             this.name = 'kossie updated';
+        //         }
+        //     },
+        // });
+
+        //2. 지역 등록
+        const HelloWorld2 = {
+            template: `<div>hello world2 지역 등록</div>`
+        }
+
+        const KossieButton = { //이때 hello-world는 전역으로 등록된 상태이기 때문에 사용 가능하다.
+            components: {
+                'hello-world2': HelloWorld2
             },
-            methods: { 
-                changeText() { //this는 뷰 인스턴스를 가리킨다.
-                    //뷰 인스턴스를 변수에 담아주면
-                    //이를 통해서 app1의 name Data에 접근할 수 있다.
-                    app1.name = 'kossie updated';
+            template:
+            `<div>
+                {{ name }}<br>
+                <hello-world></hello-world>
+                <hello-world2></hello-world2>
+                <button @click="changeText">Click</button>
+            </div>`
+            ,
+            data() {
+                return { 
+                    name: 'kossie',
                 }
             },
+            methods: { 
+                changeText() { 
+                    this.name = 'kossie updated';
+                }
+            },
+        };
+
+        const app = new Vue({ 
+            el: '#app',
+            // components로 지역 등록!!
+            components: {
+                'kossie-button': KossieButton
+            }
+            //components: {
+            //    '태그이름': Object이름
+            //}
+            
+
+            // data: {
+            //     name: 'kossie',
+            // },
+            // methods: { 
+            //     changeText() { 
+            //         this.name = 'kossie updated';
+            //     }
+            // },
         })
 
         const app1 = new Vue({ 
             el: '#app-1',
-            data: {
-                name: 'kossie-1',
+            // components로 지역 등록!!
+            components: {
+                'kossie-button': KossieButton
             },
-            methods: { 
-                changeText() {
-                    this.name = 'kossie-1 updated';
-                }
-            },
+        //     data: {
+        //         name: 'kossie',
+        //     },
+        //     methods: { 
+        //         changeText() {
+        //             this.name = 'kossie updated';
+        //         }
+        //     },
         })  
     </script>
 </body>
